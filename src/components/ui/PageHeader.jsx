@@ -16,17 +16,17 @@ export default function PageHeader({ title, subtitle, showBack = true, onBack, r
     <div className="mb-6 flex gap-4 items-center">
       {showBack && (
         <button
-          className="btn btn-ghost p-0 flex items-center gap-2"
+          className="btn btn-ghost btn-sm text-neutral h-9 w-9 p-0"
           onClick={onBack ? onBack : () => router.back()}
         >
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
           </svg>
         </button>
       )}
-      <div className="flex-1">
-        <h1 className="text-xl font-bold mb-1 text-neutral">{title}</h1>
-        {subtitle && <p className="text-sm text-gray-500">{subtitle}</p>}
+      <div>
+        <h1 className="text-xl font-semibold text-neutral">{title}</h1>
+        {subtitle && <p className="text-sm text-gray-400">{subtitle}</p>}
       </div>
       {right && <div>{right}</div>}
     </div>

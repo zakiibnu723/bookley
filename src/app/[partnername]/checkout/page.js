@@ -3,7 +3,7 @@ import React, { useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { addBooking, addBookingServices } from "@/services/bookingService";
 import Error from "@/components/ui/Error";
-import CheckoutHeader from "@/components/pages/[partnername]/checkout/CheckoutHeader";
+import PageHeader from "@/components/ui/PageHeader";
 import PartnerInfo from "@/components/pages/[partnername]/checkout/PartnerInfo";
 import BookingInfo from "@/components/pages/[partnername]/checkout/BookingInfo";
 import ServicesInfo from "@/components/pages/[partnername]/checkout/ServicesInfo";
@@ -69,7 +69,7 @@ export default function CheckoutPage() {
         partner_photo: partner.photo,
         partner_location: partner.location || null,
         staff_id: staff ? staff.id : null,
-        staff_name: staff ? staff.name : null, // <-- tambahkan staff_name
+        staff_name: staff ? staff.name : null,
         date,
         start: slot?.time,
         end: slot?.end,
@@ -83,11 +83,25 @@ export default function CheckoutPage() {
           name: s.name,
           duration: s.duration,
           price: s.price,
-        })), // <-- tambahkan array services ringkas
+        })),
       };
 
       const { data: booking, error } = await addBooking(bookingPayload);
-      if (error || !booking) throw new Error(error?.message || "Gagal booking");
+      // Tambahan: cek error overlap dari trigger/function SQL
+      if (error) {
+        // Cek pesan error overlap dari trigger PostgreSQL
+        if (
+          error.message?.toLowerCase().includes("overlap") ||
+          error.message?.toLowerCase().includes("booking overlap detected")
+        ) {
+          alert("Gagal booking: Slot waktu sudah terisi. Silakan pilih waktu lain.");
+        } else {
+          alert("Gagal booking: " + error.message);
+        }
+        setLoading(false);
+        return;
+      }
+      if (!booking) throw new Error("Gagal booking");
 
       // const { error: bsError } = await addBookingServices(booking.id, services);
       // if (bsError) throw new Error(bsError.message);
@@ -146,7 +160,11 @@ export default function CheckoutPage() {
   return (
     <div className="w-full max-w-2xl mx-auto p-4 sm:p-4 md:p-6 pt-6 min-h-screen bg-base-200">
       {/* Header */}
-      <CheckoutHeader onBack={() => router.back()} />
+      <PageHeader
+        title="Konfirmasi Booking"
+        subtitle="Periksa kembali detail booking Anda"
+        showBack={true}
+      />
 
       <PartnerInfo partner={partner} />
       <BookingInfo date={date} slot={slot} staff={staff} />

@@ -1,5 +1,6 @@
 import React from "react";
 import { Calendar, Clock, MapPin, User, Scissors, Phone } from "lucide-react";
+import { formatTimeNoSeconds } from "@/utils/time";
 
 function formatDate(dateString) {
   const date = new Date(dateString);
@@ -29,8 +30,8 @@ function getTotalPrice(services) {
  */
 export default function BookingCard({ booking, isHistory = false, headerType = "partner" }) {
   // Gunakan start & end langsung, fallback ke slot jika ada legacy data
-  const start = booking.start || booking.slot?.time || "-";
-  const end = booking.end || booking.slot?.end || "-";
+  const start = formatTimeNoSeconds(booking.start) || "-";
+  const end = formatTimeNoSeconds(booking.end) || "-";
   const staffName = booking.staff_name || booking.staff?.name || "Staff";
   const services = booking.services || [];
 

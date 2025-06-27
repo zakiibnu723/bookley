@@ -1,7 +1,6 @@
 "use client";
 import React, { use, useMemo, useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import SlotHeader from "@/components/pages/[partnername]/slot/SlotHeader";
 import DatePicker from "@/components/pages/[partnername]/slot/DatePicker";
 import TimeSlotGrid from "@/components/pages/[partnername]/slot/TimeSlotGrid";
 import ContinueButton from "@/components/pages/[partnername]/slot/ContinueButton";
@@ -9,10 +8,12 @@ import SelectedServiceInfo from "@/components/pages/[partnername]/slot/SelectedS
 import { fetchPartnerByUsername } from "@/services/partnerService";
 import { fetchServicesByPartner } from "@/services/serviceService";
 import { fetchStaffsByPartner } from "@/services/staffService";
-import { fetchBookingsByPartner } from "@/services/bookingService";
-import { generateTimeSlots, parseTimeString } from "@/utils/time";
+import { fetchBookingsByPartnerInDates } from "@/services/bookingService";
+import { generateTimeSlots } from "@/utils/time";
+import { getNextDateStrings } from "@/utils/date";
 import Error from "@/components/ui/Error";
 import LoadingComponent from "@/components/ui/loading/LoadingComponent";
+import PageHeader from "@/components/ui/PageHeader";
 
 export default function SlotPage({ params }) {
   const router = useRouter();
@@ -30,6 +31,9 @@ export default function SlotPage({ params }) {
   const [selectedSlot, setSelectedSlot] = useState(null);
   const [selectedDate, setSelectedDate] = useState("");
 
+  // Generate 7 hari ke depan (format YYYY-MM-DD) pakai util
+  const next7Dates = useMemo(() => getNextDateStrings(7), []);
+
   // Fetch data dari Supabase
   useEffect(() => {
     const loadData = async () => {
@@ -40,15 +44,17 @@ export default function SlotPage({ params }) {
         const [{ data: servicesData }, { data: staffsData }, { data: bookingsData }] = await Promise.all([
           fetchServicesByPartner(partnerData.id),
           fetchStaffsByPartner(partnerData.id),
-          fetchBookingsByPartner(partnerData.id),
+          fetchBookingsByPartnerInDates(partnerData.id, next7Dates),
         ]);
         setServices(servicesData || []);
         setStaffs(staffsData || []);
         setBookings(bookingsData || []);
+        console.log('bookings 7d: ', bookingsData)
       }
       setLoading(false);
     };
     loadData();
+    // eslint-disable-next-line
   }, [partnername]);
 
   // Ambil id layanan dari query string
@@ -56,9 +62,6 @@ export default function SlotPage({ params }) {
   const selectedServices = services.filter((s) => selectedIds.includes(s.id));
   const totalDuration = selectedServices.reduce((sum, s) => sum + s.duration, 0);
 
-  const open_time = partner ? parseTimeString(partner.open_time) : [0, 0];
-  const close_time = partner ? parseTimeString(partner.close_time) : [0, 0];
-  
   // Filter bookings sesuai tanggal yang dipilih
   const filteredBookings = bookings.filter(b => b.date === selectedDate);
 
@@ -112,7 +115,6 @@ export default function SlotPage({ params }) {
     );
   }
 
-
   const handleContinue = () => {
     setLoading(true)
     const slotData = slots[selectedSlot];
@@ -131,12 +133,15 @@ export default function SlotPage({ params }) {
     };
     localStorage.setItem("pending_booking", JSON.stringify(bookingData));
     router.push(`checkout`);
-    // setLoading(false)
   };
 
   return (
     <div className="w-full max-w-2xl mx-auto p-4 sm:p-4 md:p-6 pt-6 min-h-screen bg-base-200">
-      <SlotHeader />
+      <PageHeader
+        title="Pilih Waktu"
+        subtitle="Pilih slot waktu yang tersedia"
+        showBack={true}
+      />
       <SelectedServiceInfo 
         service={selectedServices} 
         totalDuration={totalDuration} 

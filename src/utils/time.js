@@ -99,3 +99,9 @@ export function isSlotOverlap(slotStart, slotEnd, bookingStart, bookingDuration)
   // Overlap jika slotStart < bookingEnd && slotEnd > bookingStart
   return slotStartMin < bookingEndMin && slotEndMin > bookingStartMin;
 }
+
+
+export function formatTimeNoSeconds(timeStr) {
+  // timeStr: "08:10:00" → "08:10"
+  return timeStr ? timeStr.slice(0, 5) : "";
+}

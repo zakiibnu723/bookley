@@ -1,32 +1,13 @@
 import React, { useRef, useState, useEffect } from "react";
 import { ChevronRight } from "lucide-react";
+import { getNextDates, formatDateID } from "@/utils/date";
 
 export default function DatePicker({ selectedDate, setSelectedDate, partner }) {
-  // Default: hari ini dan 6 hari ke depan
-  const today = new Date();
-  const dates = Array.from({ length: 7 }, (_, i) => {
-    const d = new Date(today);
-    d.setDate(today.getDate() + i);
-    return d;
-  });
-
-  function formatDate(d) {
-    const isToday =
-      d.getDate() === today.getDate() &&
-      d.getMonth() === today.getMonth() &&
-      d.getFullYear() === today.getFullYear();
-    if (isToday) {
-      return `Hari ini, ${d.getDate()} ${d.toLocaleDateString("id-ID", { month: "short" })}`;
-    }
-    return d.toLocaleDateString("id-ID", {
-      weekday: "short",
-      day: "numeric",
-      month: "short",
-    });
-  }
+  const dates = getNextDates(7);
+  const today = dates[0];
 
   // Set default selectedDate to today if not set
-  React.useEffect(() => {
+  useEffect(() => {
     if (!selectedDate) {
       setSelectedDate(dates[0].toISOString().slice(0, 10));
     }
@@ -45,7 +26,6 @@ export default function DatePicker({ selectedDate, setSelectedDate, partner }) {
   const scrollRef = useRef(null);
   const [showArrow, setShowArrow] = useState(false);
 
-  // Cek apakah scroll bar mentok kanan
   useEffect(() => {
     const el = scrollRef.current;
     if (!el) return;
@@ -79,7 +59,7 @@ export default function DatePicker({ selectedDate, setSelectedDate, partner }) {
           />
         </svg>
         <span className="text-sm font-medium text-neutral">
-          {formatDate(new Date(selectedDate))}
+          {formatDateID(new Date(selectedDate), today)}
         </span>
       </div>
       <div className="relative">
@@ -88,7 +68,7 @@ export default function DatePicker({ selectedDate, setSelectedDate, partner }) {
           className="flex gap-2 overflow-x-auto no-scrollbar p-1"
         >
           {dates.map((d) => {
-            const label = formatDate(d);
+            const label = formatDateID(d, today);
             const value = d.toISOString().slice(0, 10);
             const closed = isClosed(d);
             return (

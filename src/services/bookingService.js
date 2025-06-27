@@ -50,6 +50,17 @@ export const deleteBooking = async (id) => {
   return { success: !error, error };
 };
 
+// Ambil semua booking berdasarkan partner_id dalam rentang tanggal tertentu
+export const fetchBookingsByPartnerInDates = async (partner_id, dates) => {
+  const { data, error } = await supabase
+    .from("bookings")
+    .select("*")
+    .eq("partner_id", partner_id)
+    .in("date", dates)
+    .order("date", { ascending: true });
+  return { data, error };
+};
+
 // // Tambah banyak layanan ke tabel booking_services
 // export const addBookingServices = async (booking_id, services) => {
 //   // services: array of service object (atau array of id)
