@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    concurrentFeatures: true,
+    // concurrentFeatures: true,
 };
 
 export default nextConfig;
