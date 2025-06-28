@@ -66,8 +66,10 @@ export default function CheckoutPage() {
       const bookingPayload = {
         partner_id: partner.id,
         partner_name: partner.name,
+        partner_username: partner.username,
         partner_photo: partner.photo,
         partner_location: partner.location || null,
+        partner_city: partner.city || null,
         staff_id: staff ? staff.id : null,
         staff_name: staff ? staff.name : null,
         date,

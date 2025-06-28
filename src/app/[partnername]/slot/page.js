@@ -10,7 +10,7 @@ import { fetchServicesByPartner } from "@/services/serviceService";
 import { fetchStaffsByPartner } from "@/services/staffService";
 import { fetchBookingsByPartnerInDates } from "@/services/bookingService";
 import { generateTimeSlots } from "@/utils/time";
-import { getNextDateStrings } from "@/utils/date";
+import { getDayName, getNextDateStrings } from "@/utils/date";
 import Error from "@/components/ui/Error";
 import LoadingComponent from "@/components/ui/loading/LoadingComponent";
 import PageHeader from "@/components/ui/PageHeader";
@@ -65,9 +65,7 @@ export default function SlotPage({ params }) {
   // Filter bookings sesuai tanggal yang dipilih
   const filteredBookings = bookings.filter(b => b.date === selectedDate);
 
-  const dayName = selectedDate
-    ? new Date(selectedDate).toLocaleDateString("id-ID", { weekday: "long" })
-    : "";
+  const dayName = selectedDate ? getDayName(new Date(selectedDate)) : "";
 
   const slots = useMemo(() => {
     if (

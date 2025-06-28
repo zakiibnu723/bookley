@@ -1,6 +1,7 @@
 import React from "react";
 import { Calendar, Clock, MapPin, User, Scissors, Phone } from "lucide-react";
 import { formatTimeNoSeconds } from "@/utils/time";
+import { useRouter } from "next/navigation";
 
 function formatDate(dateString) {
   const date = new Date(dateString);
@@ -29,6 +30,7 @@ function getTotalPrice(services) {
  * @param {string} headerType - "customer" | "partner" (default: "partner")
  */
 export default function BookingCard({ booking, isHistory = false, headerType = "partner" }) {
+  const router = useRouter();
   // Gunakan start & end langsung, fallback ke slot jika ada legacy data
   const start = formatTimeNoSeconds(booking.start) || "-";
   const end = formatTimeNoSeconds(booking.end) || "-";
@@ -37,6 +39,13 @@ export default function BookingCard({ booking, isHistory = false, headerType = "
 
   const canceled = !booking.staff_id
   console.log(booking.staff_id)
+  // Handler klik partner
+  const handleClickPartner = () => {
+    if (booking.partner_username || booking.partner?.username) {
+      router.push(`/${booking.partner_username || booking.partner?.username}`);
+    }
+  };
+
   return (
     <div className={`card relative bg-base-100 shadow-md border border-base-200 mb-4 `}>
       <div className="relative -mb-6 md:absolute md:mb-0 top-4 right-4 flex flex-col items-end gap-1">
@@ -51,7 +60,7 @@ export default function BookingCard({ booking, isHistory = false, headerType = "
         <div className="flex items-start justify-between gap-5">
           <div className="flex items-center gap-3">
             {headerType === "partner" ? (
-              <>
+              <div onClick={handleClickPartner} title="Lihat profil partner" style={{ cursor: "pointer" }}>
                 <div className="avatar">
                   <div className="md:w-14 md:h-14 w-11 h-11 rounded-full border border-gray-300">
                     <img
@@ -67,10 +76,10 @@ export default function BookingCard({ booking, isHistory = false, headerType = "
                   </div>
                   <div className="flex items-center text-xs leading-3 text-gray-500 overflow-wrap gap-1">
                     <MapPin className="w-3 h-3" />
-                    <span>{booking.partner_location || booking.partner?.location}</span>
+                    <span>{booking.partner_location}, {booking.partner_city}</span>
                   </div>
                 </div>
-              </>
+              </div>
             ) : (
               <div className="px-2 py-0 mt-0">
                 <div className="font-bold text-lg text-neutral flex items-center gap-2">

@@ -1,15 +1,15 @@
 import React, { useRef, useState, useEffect } from "react";
 import { ChevronRight } from "lucide-react";
-import { getNextDates, formatDateID } from "@/utils/date";
+import { getNextDateStrings, formatDateID, getDayName } from "@/utils/date";
 
 export default function DatePicker({ selectedDate, setSelectedDate, partner }) {
-  const dates = getNextDates(7);
-  const today = dates[0];
+  const datesString = getNextDateStrings(7);
+  const today = new Date(datesString[0]);
 
-  // Set default selectedDate to today if not set
+  // Set default selectedDate ke hari ini jika belum ada
   useEffect(() => {
     if (!selectedDate) {
-      setSelectedDate(dates[0].toISOString().slice(0, 10));
+      setSelectedDate(datesString[0]);
     }
     // eslint-disable-next-line
   }, []);
@@ -17,8 +17,7 @@ export default function DatePicker({ selectedDate, setSelectedDate, partner }) {
   // Helper: cek apakah hari ini tutup
   function isClosed(d) {
     if (!partner?.opening_hours) return false;
-    const dayNames = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
-    const dayName = dayNames[d.getDay()];
+    const dayName = getDayName(d); // gunakan utils
     const dayObj = partner.opening_hours.find((h) => h.day === dayName);
     return dayObj && !dayObj.is_open;
   }
@@ -67,16 +66,15 @@ export default function DatePicker({ selectedDate, setSelectedDate, partner }) {
           ref={scrollRef}
           className="flex gap-2 overflow-x-auto no-scrollbar p-1"
         >
-          {dates.map((d) => {
-            const label = formatDateID(d, today);
-            const value = d.toISOString().slice(0, 10);
-            const closed = isClosed(d);
+          {datesString.map((date) => {
+            const label = formatDateID(new Date(date), today);
+            const closed = isClosed(new Date(date));
             return (
               <button
-                key={value}
-                onClick={() => setSelectedDate(value)}
+                key={date}
+                onClick={() => setSelectedDate(date)}
                 className={`btn btn-sm rounded-full flex flex-col gap-0 leading-2.5 ${
-                  selectedDate === value
+                  selectedDate === date
                     ? "btn-primary text-white"
                     : closed
                     ? "btn-ghost text-gray-300 border border-base-300"
