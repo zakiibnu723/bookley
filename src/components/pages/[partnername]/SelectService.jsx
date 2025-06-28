@@ -40,7 +40,7 @@ export default function SelectService({ services, cart, setCart, loading, setLoa
                 </div>
             </div>
             <button
-                className="btn btn-primary w-full mt-8"
+                className="btn btn-primary text-white w-full mt-8"
                 onClick={handlePilihSlot}
                 disabled={cart.length === 0}
             >
