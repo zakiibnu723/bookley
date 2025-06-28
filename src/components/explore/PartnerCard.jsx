@@ -39,14 +39,14 @@ export function PartnerCard({ item }) {
         />
       </figure>
       <div className="card-body gap-0 p-2">
-        <div className="flex flex-col items-center gap-2 mb-1">
-          <div className="w-full flex justify-between items-end -mt-6">
+        <div className="flex flex-col items-center gap-1 mb-1">
+          <div className="w-full flex justify-between items-end -mt-8">
             <img
               src={photo}
               alt={item.name}
               className="w-10 h-10 rounded-full border border-base-200 object-cover"
             />
-            <span className={`badge ${isOpen ? "badge-success" : "badge-error"} badge-xs scale-90`}>
+            <span className={`badge ${isOpen ? "badge-accent" : "badge-soft"} -mb-1 -mr-1 badge-xs scale-90`}>
               {isOpen ? (
                 <span className="flex items-center gap-1">
                   <CheckCircle className="w-3 h-3" /> Buka

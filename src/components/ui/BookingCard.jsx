@@ -52,7 +52,7 @@ export default function BookingCard({ booking, isHistory = false, headerType = "
         <span className="text-[8px] text-warning -mt-2 md:text-[10px]">
           {canceled? "Alasan: Staff sudah tidak ada" : ""}
         </span>
-        <span className={`badge opacity-100 ${canceled? "badge-error" : isHistory ? "badge-ghost" : "badge-accent"} text-xs`}>
+        <span className={`badge opacity-100 ${canceled? "badge-error" : isHistory ? "badge-soft" : "badge-accent"} text-xs`}>
           {canceled ? "canceled" : isHistory ? "Selesai" : "Aktif"}
         </span>
       </div>
