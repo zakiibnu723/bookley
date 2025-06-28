@@ -115,7 +115,7 @@ const RegisterPage = () => {
             )}
             <button
               type="submit"
-              className="btn btn-primary btn-md w-full mt-2 shadow-md"
+              className="btn btn-primary  text-white btn-md w-full mt-2 shadow-md"
               disabled={loading}
             >
               {loading ? 'Registering...' : 'Daftar Mitra'}

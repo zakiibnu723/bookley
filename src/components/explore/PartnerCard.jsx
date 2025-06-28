@@ -59,13 +59,20 @@ export function PartnerCard({ item }) {
             </span>
           </div>
           <div className="w-full flex justify-between align-middle">
-            <div className="font-semibold text-sm truncate">{item.name}</div>
+            <div className="font-semibold text-sm truncate">{item.name || item.username}</div>
           </div>
         </div>
-        <div className="flex items-center gap-2 text-[10px] text-gray-500 mb-1">
-          <MapPin className="w-2.5 h-2.5" />
-          <span className="truncate">{item.location}, {item.city}</span>
-        </div>
+        {/* Lokasi tampil jika ada salah satu location atau city */}
+        {(item.location || item.city) && (
+          <div className="flex items-center gap-2 text-[10px] text-gray-500 mb-1">
+            <MapPin className="w-2.5 h-2.5" />
+            <span className="truncate">
+              {item.location ? item.location : ""}
+              {item.location && item.city ? ", " : ""}
+              {item.city ? item.city : ""}
+            </span>
+          </div>
+        )}
         <div className="flex items-center gap-2 text-[10px] text-gray-500 -mt-1">
           <Clock className="w-2.5 h-2.5" />
           {isOpen
