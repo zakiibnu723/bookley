@@ -4,7 +4,7 @@ export default function TimeSlotButton({ slot, selected, onSelect }) {
       onClick={onSelect}
       disabled={!slot.available}
       className={`
-        p-3 rounded-lg bg-base-100 border text-sm font-medium transition-all
+        p-3 rounded-lg bg-base-100 border-1 text-sm font-medium transition-all
         ${
           selected
             ? "border-primary text-primary border-1 scale-[0.95]"
