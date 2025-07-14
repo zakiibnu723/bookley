@@ -1,6 +1,6 @@
 export default function CustomerInfo({ name, setName, phone, setPhone, note, setNote }) {
   return (
-    <div className="bg-base-100 rounded-lg border border-base-300 p-4 mb-6">
+    <div className="bg-base-100 rounded-lg border-1 border-gray-200 p-4 mb-6">
       <h3 className="font-medium text-neutral mb-2">Data Pemesan</h3>
       <div className="flex flex-col gap-2">
         <input

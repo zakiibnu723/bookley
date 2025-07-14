@@ -2,7 +2,7 @@ import { Calendar, Clock, User } from "lucide-react";
 
 export default function BookingInfo({ date, slot, staff }) {
   return (
-    <div className="bg-base-100 rounded-lg text-neutral border border-base-300 p-4 mb-6">
+    <div className="bg-base-100 rounded-lg text-neutral border-1 border-gray-200 p-4 mb-6">
       <div className="flex flex-col gap-2">
         {/* Tanggal */}
         <div className="flex items-center gap-2">
