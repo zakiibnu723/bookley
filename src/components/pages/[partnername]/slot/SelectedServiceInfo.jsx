@@ -2,7 +2,7 @@ export default function SelectedServiceInfo({ service, totalDuration }) {
 
   return (
     <>
-      <div className="bg-base-100 rounded-lg border-1 border-gray-400 p-4 mb-6">
+      <div className="bg-base-100 rounded-lg border-1 border-gray-300 p-4 mb-6">
         <h3 className="font-medium text-neutral mb-2">Layanan dipilih:</h3>
         <ul className="mb-2">
           {service.map((s) => (
