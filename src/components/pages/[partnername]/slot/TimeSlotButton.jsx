@@ -9,8 +9,8 @@ export default function TimeSlotButton({ slot, selected, onSelect }) {
           selected
             ? "border-primary text-primary border-1 scale-[0.95]"
             : slot.available
-            ? "bg-base-100 border-base-300 text-neutral hover:border-primary hover:text-primary"
-            : "bg-base-300 border-base-300 text-gray-400 cursor-not-allowed"
+            ? "bg-base-100 border-gray-400 text-neutral hover:border-primary hover:text-primary"
+            : "bg-base-300 border-gray-400 text-gray-400 cursor-not-allowed"
         }
       `}
     >
