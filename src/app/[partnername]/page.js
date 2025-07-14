@@ -62,7 +62,7 @@ export default function BookingPage({ params }) {
     }
 
     return (
-        <div className="min-h-screen bg-base-200">
+        <div className="min-h-screen bg-base-100">
             {/* Header */}
             <PartnerProfile
                 partner={partner}
